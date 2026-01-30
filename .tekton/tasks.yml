@@ -1,8 +1,9 @@
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: cleanup
+  namespace: sn-labs-pabloaqm
 spec:
   description: This task will clean up a workspace by deleting all the files.
   workspaces:
@@ -34,7 +35,7 @@ spec:
           rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
         fi
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: eslint
@@ -58,7 +59,7 @@ spec:
         echo "Running ESLint..."
         npm run lint $(params.args)
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: jest-test
@@ -74,7 +75,7 @@ spec:
         #!/usr/bin/env sh
         set -eu
         echo "Installing dependencies..."
-        npm ci
+        npm install
     - name: run-tests
       image: node:20-alpine
       workingDir: $(workspaces.output.path)
